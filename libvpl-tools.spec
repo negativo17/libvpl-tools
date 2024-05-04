@@ -1,6 +1,6 @@
 Name:           libvpl-tools
 Version:        1.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) Tools
 License:        MIT
 URL:            https://intel.github.io/libvpl/latest/index.html
@@ -10,7 +10,7 @@ Source0:        https://github.com/intel/libvpl-tools/archive/v%{version}/%{name
 
 BuildRequires:  cmake3
 BuildRequires:  devtoolset-9-gcc-c++
-BuildRequires:  libvpl-devel
+BuildRequires:  libvpl-devel >= 2.11.0
 BuildRequires:  pkgconfig(libdrm) >= 2.4.91
 BuildRequires:  pkgconfig(libva) >= 1.2
 BuildRequires:  pkgconfig(libva-drm) >= 1.2
@@ -72,5 +72,8 @@ rm -fr %{buildroot}%{_datadir}/vpl-tools
 %{_libdir}/libcttmetrics.so
 
 %changelog
+* Sat May 04 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0-2
+- Require libvpl 2.11.0 for building.
+
 * Sat May 04 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0-1
 - First build.
