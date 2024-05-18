@@ -1,15 +1,17 @@
 Name:           libvpl-tools
 Version:        1.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) Tools
 License:        MIT
 URL:            https://intel.github.io/libvpl/latest/index.html
 ExclusiveArch:  x86_64
 
 Source0:        https://github.com/intel/libvpl-tools/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch0:         libvpl-tools-fedora.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
+BuildRequires:  gtest-devel
 BuildRequires:  libvpl-devel >= 2.11.0
 BuildRequires:  pkgconfig(libdrm) >= 2.4.91
 BuildRequires:  pkgconfig(libva) >= 1.2
@@ -36,17 +38,23 @@ Current runtime implementations:
 - Intel Media SDK for use on legacy Intel graphics
 
 %prep
-%autosetup
+%autosetup -p1
+
+# delete bundled googletest
+rm -rf ext/*
 
 %build
-%cmake
+%cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTS=ON \
+    -DTOOLS_ENABLE_OPENCL=ON
 %cmake_build
 
 %install
 %cmake_install
 
-# Let RPM pick up documents in the files section
-rm -fr %{buildroot}%{_datadir}/vpl-tools
+%check
+%ctest
 
 %files
 %license LICENSE
@@ -65,6 +73,9 @@ rm -fr %{buildroot}%{_datadir}/vpl-tools
 %{_libdir}/libcttmetrics.so
 
 %changelog
+* Fri May 17 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 1.0.0-3
+- Bundled googletest removed
+
 * Sat May 04 2024 Simone Caronni <negativo17@gmail.com> - 1.0.0-2
 - Require libvpl 2.11.0 for building.
 
