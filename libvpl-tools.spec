@@ -1,6 +1,6 @@
 Name:           libvpl-tools
-Version:        1.0.0
-Release:        4%{?dist}
+Version:        1.1.0
+Release:        1%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) Tools
 License:        MIT
 URL:            https://intel.github.io/libvpl
@@ -89,10 +89,13 @@ rm -rf ext/*
 %{_libdir}/libvpl_wayland.so
 
 %files libs
-%{_libdir}/libcttmetrics.so.%{version}
-%{_libdir}/libvpl_wayland.so.%{version}
+%{_libdir}/libcttmetrics.so.*
+%{_libdir}/libvpl_wayland.so.*
 
 %changelog
+* Thu Jul 04 2024 Simone Caronni <negativo17@gmail.com> - 1.1.0-1
+- Update to 1.1.0.
+
 * Tue May 28 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 1.0.0-4
 - Devel and Libs subpackages added
 
