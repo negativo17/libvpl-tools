@@ -1,13 +1,15 @@
 Name:           libvpl-tools
 Version:        1.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) Tools
 License:        MIT
-URL:            https://intel.github.io/libvpl/latest/index.html
+URL:            https://intel.github.io/libvpl
 ExclusiveArch:  x86_64
 
 Source0:        https://github.com/intel/libvpl-tools/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         libvpl-tools-fedora.patch
+Patch0:         %{name}-use-system-gtest.patch
+# https://github.com/intel/libvpl-tools/pull/1
+Patch1:         %{name}-versioned-library.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -36,6 +38,20 @@ Current runtime implementations:
 - Intel VPL GPU Runtime for use on Intel Iris Xe graphics and newer
 - Intel Media SDK for use on legacy Intel graphics
 
+%package devel
+Summary:	Development files for %{name}
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
+
+%description devel
+The %{name}-devel package contains library and header files for development
+
+%package libs
+Summary:	%{name} runtime library
+Requires:	%{name} = %{version}-%{release}
+
+%description libs
+Runtime library for %{name}
+
 %prep
 %autosetup -p1
 
@@ -45,6 +61,7 @@ rm -rf ext/*
 %build
 %cmake \
     -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
     -DTOOLS_ENABLE_OPENCL=ON
 %cmake_build
 
@@ -53,7 +70,7 @@ rm -rf ext/*
 
 %files
 %license LICENSE
-%doc README.md CONTRIBUTING.md third-party-programs.txt
+%doc README.md third-party-programs.txt
 %{_bindir}/system_analyzer
 %{_bindir}/val-surface-sharing
 %{_bindir}/vpl-import-export
@@ -63,11 +80,22 @@ rm -rf ext/*
 %{_bindir}/sample_encode
 %{_bindir}/sample_multi_transcode
 %{_bindir}/metrics_monitor
-%dir %{_libdir}/vpl-tools
-%{_libdir}/vpl-tools/libvpl_wayland.so
+
+%files devel
+%dir %{_includedir}/cttmetrics
+%{_includedir}/cttmetrics/cttmetrics.h
+%{_includedir}/cttmetrics/cttmetrics_utils.h
 %{_libdir}/libcttmetrics.so
+%{_libdir}/libvpl_wayland.so
+
+%files libs
+%{_libdir}/libcttmetrics.so.%{version}
+%{_libdir}/libvpl_wayland.so.%{version}
 
 %changelog
+* Tue May 28 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 1.0.0-4
+- Devel and Libs subpackages added
+
 * Fri May 17 2024 Ali Erdinc Koroglu <aekoroglu@fedoraproject.org> - 1.0.0-3
 - Bundled googletest removed
 
