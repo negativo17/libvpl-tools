@@ -1,5 +1,5 @@
 Name:           libvpl-tools
-Version:        1.1.0
+Version:        1.2.0
 Release:        1%{?dist}
 Summary:        Intel Video Processing Library (Intel VPL) Tools
 License:        MIT
@@ -98,6 +98,9 @@ rm -rf ext/*
 %{_libdir}/libvpl_wayland.so.*
 
 %changelog
+* Tue Sep 10 2024 Simone Caronni <negativo17@gmail.com> - 1.2.0-1
+- Update to 1.2.0.
+
 * Thu Jul 04 2024 Simone Caronni <negativo17@gmail.com> - 1.1.0-1
 - Update to 1.1.0.
 
