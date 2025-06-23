@@ -14,8 +14,6 @@ Patch1:         %{name}-versioned-library.patch
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  libvpl-devel >= 2.11.0
-BuildRequires:  pkgconfig(epoxy)
-BuildRequires:  pkgconfig(gtkmm-4.0)
 BuildRequires:  pkgconfig(libdrm) >= 2.4.91
 BuildRequires:  pkgconfig(libva) >= 1.2
 BuildRequires:  pkgconfig(libva-drm) >= 1.2
